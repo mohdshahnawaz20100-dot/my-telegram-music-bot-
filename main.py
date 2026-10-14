@@ -40,3 +40,27 @@ def main():
 
 if __name__ == "__main__":
     main()
+import subprocess
+
+async def song(update: Update, context):
+    if not context.args:
+        await update.message.reply_text("Song ka naam likh bhai!\nExample: /song Kesariya")
+        return
+    
+    query = " ".join(context.args)
+    await update.message.reply_text(f"🔍 '{query}' dhundh raha hu...")
+    
+    try:
+        # YouTube pe search karke pehla result ka link nikal
+        result = subprocess.run(
+            ["yt-dlp", f"ytsearch1:{query}", "--get-url", "--no-warnings"],
+            capture_output=True, text=True, timeout=30
+        )
+        link = result.stdout.strip()
+        
+        if link:
+            await update.message.reply_text(f"🎵 Ye le bhai:\n{link}")
+        else:
+            await update.message.reply_text("Kuch nahi mila, dusra naam try kar.")
+    except Exception as e:
+        await update.message.reply_text(f"Error: {str(e)}")
