@@ -9,7 +9,6 @@ TOKEN = os.environ["BOT_TOKEN"]
 AUDIO_FILE = Path(__file__).parent / "sample.mp3"
 
 
-# Render ke liye dummy web server (port scan timeout fix)
 def run_dummy_server():
     port = int(os.environ.get("PORT", 10000))
     server = HTTPServer(('0.0.0.0', port), BaseHTTPRequestHandler)
@@ -31,7 +30,6 @@ async def audio(update: Update, context):
 
 
 def main():
-    # Dummy server background me chalao
     threading.Thread(target=run_dummy_server, daemon=True).start()
 
     app = Application.builder().token(TOKEN).build()
